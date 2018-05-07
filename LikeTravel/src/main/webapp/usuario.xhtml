@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Clube</title>
+</h:head>
+<h:body>
+	<h:messages globalOnly="true" />
+	<h:form id="formPesquisa" rendered="#{!usuarioBean.editMode}">
+		<h:commandLink value="Adicionar Usuario"
+			actionListener="#{usuarioBean.create}" />
+		<h:panelGrid columns="2">
+			<h:panelGroup>
+				<h:outputText value="Filtro:" />
+				<h:inputText maxlength="30" size="30" value="#{usuarioBean.nomeUsuario}">
+					<f:ajax event="keyup" render="resultados"
+						listener="#{usuarioBean.filtrarUsuario}" />
+				</h:inputText>
+			</h:panelGroup>
+		</h:panelGrid>
+		<h:dataTable value="#{usuarioBean.usuarios}" var="usuario" id="resultados"
+			border="1">
+			<h:column>
+				<f:facet name="header">ID</f:facet>
+				<h:outputText value="#{usuario.id}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Nome do Usuario</f:facet>
+				<h:outputText value="#{usuario.nome}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">#</f:facet>
+				<h:commandLink value="Alterar" action="#{usuarioBean.update}">
+					<f:setPropertyActionListener target="#{usuarioBean.usuario}"
+						value="#{usuario}" />
+				</h:commandLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">#</f:facet>
+				<h:commandLink id="lnkDelete" value="Excluir" action="#{usuarioBean.delete}" >
+					<f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}" />
+				</h:commandLink>
+			</h:column>
+		</h:dataTable>
+	</h:form>
+	<h:form id="formEdicao" rendered="#{usuarioBean.editMode}">
+		<h:panelGrid columns="2">
+			<h:outputText value="Nome do usuario:" />
+			<h:inputText maxlength="30" size="30" value="#{usuarioBean.usuario.nome}" />
+			<h:outputText value="Email do usuario:" />
+			<h:inputText maxlength="30" size="30" value="#{usuarioBean.usuario.email}" />
+			<h:outputText value="Senha do usuario:" />
+			<h:inputSecret maxlength="30" size="30" value="#{usuarioBean.usuario.senha}" />
+		</h:panelGrid>
+		<h:commandButton value="Salvar" actionListener="#{usuarioBean.salvar}" />
+		<h:commandButton value="Cancelar" action="usuario" />
+	</h:form>
+</h:body>
+</html>
